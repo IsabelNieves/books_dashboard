@@ -28,8 +28,7 @@ st.set_page_config(layout="wide", page_title="Books_dashboard")
 # set the coulor 
 set_background_color('#ede4bb')  # Change the value to your desired color
 
-# Add the content you want for the first container (e.g., title)
-st.markdown("<h1 style='text-align: center; color: #873e23;'>Let's talk about Books Ratings </h1>", unsafe_allow_html=True)
+
 
 # Create two columns
 col1, col2 = st.columns([1,3])
@@ -67,6 +66,8 @@ with col1:
 with col2:
 
     # Add the content you want for the first container (e.g., title)
+
+    st.markdown("<h1 style='text-align: center; color: #873e23;'>Let's talk about Books Ratings </h1>", unsafe_allow_html=True)
     st.markdown("<h1 style='text-align: center; color: #873e23; font-size: 26px;'>Have you ever lost a lot of time thinking about the next book you will read? Save time. Here we will talk about the rating of readers around the world.</h1>", unsafe_allow_html=True)
 
 
@@ -174,7 +175,7 @@ with col4:
     fig.update_layout(
     yaxis=dict(autorange="reversed", showgrid=False),
     xaxis=dict(showgrid=False),
-    title='Generation Distribution',
+    title='Readers per Generation',
     title_font=dict(color='#873e23', family='Arial, bold', size=30),
     title_x=0.0,
     plot_bgcolor='#ede4bb',
@@ -276,7 +277,7 @@ with col5:
     fig.update_layout(
     yaxis=dict(autorange="reversed", showgrid=False,tickfont=dict(color='#873e23')),
     xaxis=dict(showgrid=False,tickfont=dict(color='#873e23')),
-    title='Most voted books (TOP 10)',
+    title='TOP 10 voted books',
     title_font=dict(color='#873e23', family='Arial, bold', size=30),
     title_x=0.0,
     plot_bgcolor='#ede4bb',
