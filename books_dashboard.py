@@ -23,7 +23,7 @@ def set_background_color(color):
     st.markdown(css_code, unsafe_allow_html=True)
 
 # Configure page layout and change background color
-st.set_page_config(layout="wide", page_title="My Streamlit App")
+st.set_page_config(layout="wide", page_title="Books_dashboard")
 
 # set the coulor 
 set_background_color('#ede4bb')  # Change the value to your desired color
@@ -32,30 +32,23 @@ set_background_color('#ede4bb')  # Change the value to your desired color
 st.markdown("<h1 style='text-align: center; color: #873e23;'>Let's talk about Books Ratings </h1>", unsafe_allow_html=True)
 
 # Create two columns
-col1, col2 = st.columns([3,1])
+col1, col2 = st.columns([1,3])
+
 
 # Add content to the first column.
 with col1:
-    st.markdown("<h1 style='text-align: center; color: #873e23; font-size: 26px;'>Have you ever lost a lot of time thinking about the next book you will read? Save time. Here we will talk about the rating of readers around the world.</h1>", unsafe_allow_html=True)
-
-# Add content to the second column
-with col2:
-
     st.markdown(
     """
     <style>
     div.image-container {
-        padding: 30px;
-        max-width: 100%;
-        max-height: 100%;
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
     }
     div.image-container img {
-        object-fit: contain;
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
     }
     </style>
     """,
@@ -64,9 +57,19 @@ with col2:
 
     st.markdown("<div class='container'>", unsafe_allow_html=True)
     st.markdown("<div class='image-container'>", unsafe_allow_html=True)
-    st.image("https://amboy.lib.il.us/wp-content/uploads/2022/06/summer-reading.jpg", use_column_width=False,width=300)
+    st.image("https://amboy.lib.il.us/wp-content/uploads/2022/06/summer-reading.jpg", use_column_width=False, width=500)
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
+
+    
+
+# Add content to the second column
+with col2:
+
+    # Add the content you want for the first container (e.g., title)
+    st.markdown("<h1 style='text-align: center; color: #873e23;'>Let's talk about Books Ratings </h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #873e23; font-size: 26px;'>Have you ever lost a lot of time thinking about the next book you will read? Save time. Here we will talk about the rating of readers around the world.</h1>", unsafe_allow_html=True)
+
 
 
 #read the dataset
@@ -75,7 +78,7 @@ df=pd.read_csv("./books_raiting.csv")
 # Create two columns for the first two containers
 col3, col4 = st.columns(2)
 
-# First container in column 3
+# container in column 3
 with col3:
     st.markdown("<div style='width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;'>", unsafe_allow_html=True)
     st.markdown(
@@ -89,27 +92,34 @@ with col3:
         """,
         unsafe_allow_html=True
     )
-# Calcular el total de usuarios por país
-    usuarios_por_pais = df.groupby("Country_Code")["user_id"].count().reset_index()
-    usuarios_por_pais.rename(columns={"user_id": "Total_Usuarios"}, inplace=True)
-# Crear un nuevo dataset con la información para la gráfica
-    nuevo_df = usuarios_por_pais[["Country_Code", "Total_Usuarios"]].merge(df[["Country_Code", "country"]], on="Country_Code").drop_duplicates()
-# Mostrar el nuevo dataset
-    print(nuevo_df.head())
-# Definir el color base
-    color_base = '#edc9c0'  # Por ejemplo, rojo
-# Definir los degradados de color
-    color_degradations = ['#edc9c0', '#c34b2c']  # Por ejemplo, tonos más claros de rojo
-# Combinar el color base y los degradados
-    colors = [color_base] + color_degradations
-# Crear la escala de colores personalizada
+    # Calculate total users per country
+    users_per_country = df.groupby("Country_Code")["user_id"].count().reset_index()
+    users_per_country.rename(columns={"user_id": "Total_Users"}, inplace=True)
+
+    # Create a new dataset with information for the chart
+    new_df = users_per_country[["Country_Code", "Total_Users"]].merge(df[["Country_Code", "country"]], on="Country_Code").drop_duplicates()
+
+    # Display the new dataset
+    print(new_df.head())
+
+    # Define the base color
+    base_color = '#edc9c0'  # For example, red
+
+    # Define color degradations
+    color_degradations = ['#edc9c0', '#c34b2c']  # For example, lighter shades of red
+
+    # Combine the base color and color degradations
+    colors = [base_color] + color_degradations
+
+    # Create the custom color scale
     custom_colors = plotly.colors.make_colorscale(colors)
-# Generar la gráfica de cloropleto con la escala de colores personalizada
-    fig = px.choropleth(nuevo_df,
+
+    # Generate the choropleth map with the custom color scale
+    fig = px.choropleth(new_df,
                     locations="Country_Code",
-                    color="Total_Usuarios",
+                    color="Total_Users",
                     hover_name="country",
-                    color_continuous_scale=custom_colors,  # Utilizar la escala de colores personalizada
+                    color_continuous_scale=custom_colors,  # Use the custom color scale
                     projection="natural earth")
 
     fig.update_layout(
@@ -119,47 +129,32 @@ with col3:
     plot_bgcolor='#ede4bb',
     paper_bgcolor='#ede4bb',
     autosize=True
-    
 )
+
     fig.update_coloraxes(colorbar=dict(  
-    tickfont=dict(color='#873e23')  # Color de texto de las etiquetas
+    tickfont=dict(color='#873e23')  # Color of the tick labels
 ))
 
-# Mostrar la gráfica en Streamlit
+    # Show the fig
     st.plotly_chart(fig)
   
 
 # Second container in column 2
 with col4:
-    st.markdown(
-        "<div style='width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;'>",
-        unsafe_allow_html=True
-    )
-   
-    st.markdown("<div style='width: 100%; height: 0px;'>", unsafe_allow_html=True)
+    st.markdown("<div style='width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;'>", unsafe_allow_html=True)
     st.markdown(
         """
         <style>
         div.st-ai, div.st-cu {
             margin-top: -30px;
-            margin-bottom: 0px;
-        }
-        div.image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 0%;
-        }
-        div.image-container img {
-            max-width: 100%;
-            max-height: 100%;
+            margin-bottom: 20px;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
     
-  # Contar la cantidad de personas en cada generación
+  # count the total per generation
     age = df['Generation'].value_counts().to_frame().reset_index()
     age.columns = ['Generation', 'count']
     age['count'] = age['count'].astype(int)
@@ -167,7 +162,7 @@ with col4:
 
     colors = ["#377576", "#59a6ba", "#c34b2c", "#c7a93b"]
 
-# Crear la gráfica de pastel con centro vacío utilizando Plotly Express
+# Create the pie plot using  Plotly Express
     fig = px.pie(age, values='count', names='Generation', hole=0.3,
              labels={'Generation': 'Age Category', 'Count': 'Number Of People'},
              color_discrete_sequence=colors)
@@ -185,17 +180,17 @@ with col4:
     title_x=0.0,
     plot_bgcolor='#ede4bb',
     paper_bgcolor='#ede4bb',
-    autosize=False,
+    autosize=True,
     legend_font=dict(size=20, color='#873e23'),
     legend_title_font=dict(size=18, color='#873e23')
     
 ) 
 
-# Mostrar la gráfica
+# Show the graph
     st.plotly_chart(fig)
 
 # Third container occupying the entire screen
-# Add the content you want for the third container
+
 def load_data():
     df_books_sum = df.groupby(by=['title'])['rating'].sum().to_frame().reset_index().rename(columns={'title': 'title', 'rating': 'total_rating'})
     df_books_sum = df_books_sum.sort_values(by='total_rating', ascending=False)
@@ -210,7 +205,7 @@ def load_data():
     df_books_merge1 = df_books_merge[df_books_merge['count_rating'] > 75]
     df_books_merge1 = df_books_merge1.sort_values(by='rate', ascending=False)[0:10]
     
-    # Agregar la columna "wrapped_title"
+    # Add column "wrapped_title"
     df_books_merge1['wrapped_title'] = df_books_merge1['title'].apply(wrap_title)
     return df_books_merge1
 
@@ -246,13 +241,13 @@ def plot_bar_chart(df_books_merge1):
     
     return fig
 
-# Cargar los datos
+# Load the data
 df_books_merge1 = load_data()
 
-# Crear la gráfica
+# Creat3 the plot
 fig1 = plot_bar_chart(df_books_merge1)
 
-# Mostrar la gráfica en Streamlit
+# Show the plot
 st.plotly_chart(fig1)
 
 
@@ -260,7 +255,7 @@ st.plotly_chart(fig1)
 # Create two more columns for the last two containers
 col5, col6 = st.columns(2)
 
-# Fourth container in column 3
+# 
 with col5:
     st.markdown(
         "<div style='width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;'>",
@@ -291,13 +286,13 @@ with col5:
 
 )
 
-# Renderizar la figura en Streamlit
+# Show the plot
     st.plotly_chart(fig)
 
 
 
 
-# Fifth container in column 4
+# container in column 6
 with col6:
     st.markdown(
         "<div style='width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;'>",
