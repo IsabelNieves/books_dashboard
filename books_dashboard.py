@@ -70,7 +70,7 @@ with col2:
 
 
 #read the dataset
-df=pd.read_csv(".\books_raiting.csv")
+df=pd.read_csv("./books_raiting.csv")
 
 # Create two columns for the first two containers
 col3, col4 = st.columns(2)
