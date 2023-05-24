@@ -34,7 +34,7 @@ st.markdown("<h1 style='text-align: center; color: #873e23;'>Let's talk about Bo
 # Create two columns
 col1, col2 = st.columns([3,1])
 
-# Add content to the first column
+# Add content to the first column.
 with col1:
     st.markdown("<h1 style='text-align: center; color: #873e23; font-size: 26px;'>Have you ever lost a lot of time thinking about the next book you will read? Save time. Here we will talk about the rating of readers around the world.</h1>", unsafe_allow_html=True)
 
@@ -70,7 +70,7 @@ with col2:
 
 
 #read the dataset
-df=pd.read_csv("C:\\Users\\Isabel\\OneDrive\\Documentos\\HDipData\\Sep2022\\VSC\\books_raiting.csv")
+df=pd.read_csv(".\books_raiting.csv")
 
 # Create two columns for the first two containers
 col3, col4 = st.columns(2)
