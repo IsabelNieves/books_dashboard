@@ -67,7 +67,6 @@ with col1:
 with col2:
 
     # Add the content you want for the first container (e.g., title)
-    st.markdown("<h1 style='text-align: center; color: #873e23;'>Let's talk about Books Ratings </h1>", unsafe_allow_html=True)
     st.markdown("<h1 style='text-align: center; color: #873e23; font-size: 26px;'>Have you ever lost a lot of time thinking about the next book you will read? Save time. Here we will talk about the rating of readers around the world.</h1>", unsafe_allow_html=True)
 
 
